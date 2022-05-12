@@ -12,21 +12,24 @@ public class AppLinear {
     }
 
     public static void main(String[] args) {
-        HashTableLinear HashTableLinear = new HashTableLinear(100);
-        /* 1st dimension: [number of samples]
-           2nd dimension: [number of elements, to be hashed, in samples]. */
-        int samples[][] = new int[20][100];
+        int samplesNum = 20 ;   /* Number of samples to run. */
+        int sampleSize = 100;   /* The size of each sample (number of elements to be hashed). */
+        HashTableLinear[] HashTables = new HashTableLinear[samplesNum]; /* The hash tables array (one table for each sample). */
+
+        /* Constructing each Hash Table with the sample size. */
+        for(int i = 0; i < HashTables.length; i++)
+            HashTables[i] = new HashTableLinear(sampleSize);
+        /* Building the samples with RANDOM values. */
+        int samples[][] = new int[samplesNum][sampleSize];
         build_samples(samples);
-        //Test Loop
+        /* Testing Loop. */
         for(int k = 0; k < samples.length; k++){
-            for(int i = 0; i < samples[0].length; i++){
-                try{ HashTableLinear.hash(samples[k][i]); }
+            for(int l = 0; l < samples[0].length; l++)
+                try{
+                    HashTables[k].hash(samples[k][l]); // Hashing the element.
+                }
                 catch(Exception e){ e.printStackTrace(); }
-            }
-            HashTableLinear.hashBucketes(); //end of insertions
-            if(k < 9) System.out.print(" ");
-            System.out.println(k+1 +")  "+ HashTableLinear.collisions);
-            HashTableLinear = new HashTableLinear(100);
+            System.out.println("collisions = " + HashTables[k].collisions + " of HashTable " + (k+1) + " <------------------");
         }
     }
 }

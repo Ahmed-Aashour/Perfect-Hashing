@@ -13,7 +13,7 @@ public class HashTableLinear {
         this.matrix =  new int [(int)Math.pow(2, this.size)][MAXBITS];
         this.setMatrix();
         this.Dictionary = new Bucket[(int)Math.pow(2, this.size)];
-        this.constructBins(); //construct all Bins
+        this.constructBuckets(); //construct all Buckets
     }
 
     //Bucket sub-class
@@ -22,15 +22,18 @@ public class HashTableLinear {
         List<Integer> elements;     /* Holds the elemets to be hashed */
         boolean hasCollisions;      /* True: if there are more than 1 element 
                                        False: otherwise. */
+        int id;
         //constructor
-        Bucket(int size) {
+        Bucket(int size, int id) {
             super(size);
+            this.id = id;
             this.elements = new ArrayList<Integer>();
             this.hasCollisions = false;
         }
-        /* Adds the elements to the Bucket. */
+        /* Adds the elements to the Bucket & performs hashing to the whole bucket again. */
         void put(int n){ 
             this.elements.add(n);
+            this.hashBucket();
             if(this.elements.size() == 2)
                 this.hasCollisions = true;
         }
@@ -50,12 +53,13 @@ public class HashTableLinear {
             for(int i = 0; i < elements.size(); i++){
                 this.hash(this.elements.get(i));
             }
+            System.out.println("collisions = " + this.collisions + " of Bucket " + this.id);
         }
     }
 
-    private void constructBins() {
+    private void constructBuckets() {
         for(int i = 0; i < this.Dictionary.length; i++){
-            this.Dictionary[i] = new Bucket(0);
+            this.Dictionary[i] = new Bucket(0, i+1);
         }
     }
 
@@ -83,22 +87,20 @@ public class HashTableLinear {
         this.Dictionary[index].put(n);
     }
 
-     // find the smallest number power of 2 that covers the desired dictionary size
-     private void setSize(int size)
-     {
-         // O(N)
-         int x = 1;
-         int count = 0;
-         while(x < size){
-             x <<= 1; // multiply by 2
-             count++;
-         }
-         this.size = count; 
-     }
+    // find the smallest number power of 2 that covers the desired dictionary size
+    private void setSize(int size){
+        // O(N)
+        int x = 1;
+        int count = 0;
+        while(x < size){
+            x <<= 1; // multiply by 2
+            count++;
+        }
+        this.size = count; 
+    }
 
     // create random matrix
-    private void setMatrix()
-    {
+    private void setMatrix(){
         for(int i = 0; i < matrix.length; i++)
         {
             for(int j = 0; j < matrix[0].length; j++)
@@ -116,45 +118,11 @@ public class HashTableLinear {
         return column;
     }
 
-    private int[] addColumns(int x[], int y[])
-    {
+    private int[] addColumns(int x[], int y[]){
         for(int i = 0; i < x.length; i++)
         {
             x[i] = (x[i] + y[i])%2;
         }
         return x;
     }
-
-    public void hashBucketes() {
-        for(int i = 0; i < this.Dictionary.length; i++){
-            Bucket bucket = this.Dictionary[i];
-            if(bucket.hasCollisions){ //hash the collided buckets
-                bucket.hashBucket();
-                System.out.println("Bucket " + (i+1) + " collisions: " + bucket.collisions);
-            }
-        }
-    }
-
-    public boolean lookup(int n){
-        int answer[] = new int[this.size];
-        String bits = Integer.toBinaryString(n);
-        for(int i = 0; i < bits.length(); i++)
-        {
-            if(bits.charAt(i) == '0'){continue;}
-            int column [] = this.getColumn(i);
-            answer = this.addColumns(answer, column);
-        }
-        int index = 0;
-        for(int i = 0; i < answer.length; i++)
-        {
-            if(answer[i] == 0){continue;}
-            index = index + (1<<i);
-        }
-
-        if(this.Dictionary[index].isNotEmpty()) //Bucket is not empty
-            this.collisions++;
-        
-        return true;
-    }
-
 }
