@@ -30,6 +30,8 @@ public class AppLinear {
                 }
                 catch(Exception e){ e.printStackTrace(); }
             System.out.println("collisions = " + HashTables[k].collisions + " of HashTable " + (k+1) + " <------------------");
+            System.out.println(">>>>> Table size = " + HashTables[k].Dictionary.length);
+            HashTables[k].printRealSize();
         }
     }
 }

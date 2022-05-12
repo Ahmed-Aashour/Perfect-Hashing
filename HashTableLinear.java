@@ -29,6 +29,7 @@ public class HashTableLinear {
             this.id = id;
             this.elements = new ArrayList<Integer>();
             this.hasCollisions = false;
+            this.Dictionary = new int[0];
         }
         /* Adds the elements to the Bucket & performs hashing to the whole bucket again. */
         void put(int n){ 
@@ -53,7 +54,7 @@ public class HashTableLinear {
             for(int i = 0; i < elements.size(); i++){
                 this.hash(this.elements.get(i));
             }
-            System.out.println("collisions = " + this.collisions + " of Bucket " + this.id);
+            //System.out.println("collisions = " + this.collisions + " of Bucket " + this.id);
         }
     }
 
@@ -87,6 +88,25 @@ public class HashTableLinear {
         this.Dictionary[index].put(n);
     }
 
+    /* Checks if the hash function chosen is acceptable or not. */
+    public void checkBuckets()
+    {
+        int sum_squared = 0;
+        for(Bucket bucket: this.Dictionary){
+            sum_squared += bucket.size() * bucket.size();
+        }
+        /* Testing the condition. */
+        if(sum_squared > 4*this.Dictionary.length){
+            //System.out.println("NOt Cool :((((((((((((((((((((");
+            for(Bucket bucket: this.Dictionary){ //Rehashing the entire table. <----------------------
+                bucket.hashBucket();
+            }
+        }
+        else{
+            //System.out.println("So Coool :))))))))))))))))))))");
+        }
+    }
+    
     // find the smallest number power of 2 that covers the desired dictionary size
     private void setSize(int size){
         // O(N)
@@ -124,5 +144,13 @@ public class HashTableLinear {
             x[i] = (x[i] + y[i])%2;
         }
         return x;
+    }
+    
+    void printRealSize(){
+        int size = 0;
+        for(Bucket bucket: this.Dictionary){
+            size += bucket.Dictionary.length;
+        }
+        System.out.println(">>>>> Real size = " + size);
     }
 }
