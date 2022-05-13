@@ -1,0 +1,44 @@
+entered size 50
+built hashtable with size 4096
+the table is 1.6384 n^2
+inserting variable length samples 20 times
+1- inserting 4 elements
+number of rebuilds (collsions): 0
+2- inserting 6 elements
+number of rebuilds (collsions): 0
+3- inserting 31 elements
+number of rebuilds (collsions): 0
+4- inserting 8 elements
+number of rebuilds (collsions): 0
+5- inserting 9 elements
+number of rebuilds (collsions): 0
+6- inserting 31 elements
+number of rebuilds (collsions): 0
+7- inserting 31 elements
+number of rebuilds (collsions): 0
+8- inserting 37 elements
+number of rebuilds (collsions): 0
+9- inserting 44 elements
+number of rebuilds (collsions): 0
+10- inserting 35 elements
+number of rebuilds (collsions): 0
+11- inserting 38 elements
+number of rebuilds (collsions): 0
+12- inserting 35 elements
+number of rebuilds (collsions): 0
+13- inserting 32 elements
+number of rebuilds (collsions): 0
+14- inserting 30 elements
+number of rebuilds (collsions): 0
+15- inserting 33 elements
+number of rebuilds (collsions): 0
+16- inserting 5 elements
+number of rebuilds (collsions): 0
+17- inserting 9 elements
+number of rebuilds (collsions): 0
+18- inserting 41 elements
+number of rebuilds (collsions): 0
+19- inserting 33 elements
+number of rebuilds (collsions): 0
+20- inserting 27 elements
+number of rebuilds (collsions): 0

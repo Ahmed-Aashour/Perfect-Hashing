@@ -1,12 +1,12 @@
 import java.util.Arrays;
-//import java.util.stream.IntStream;
+import java.util.NoSuchElementException;
 
 public class HashTable {
     final int MAXBITS = 32;
     int size;
     int collisions = 0;
-    int Dictionary[];
-    int matrix[][];
+    int Dictionary[]; // the table
+    int matrix[][]; // the matrix represents the hash function
     // size: size of the dictionary
     public HashTable(int size)
     {
@@ -15,13 +15,15 @@ public class HashTable {
         this.matrix =  new int [(int)Math.pow(2, this.size)][MAXBITS];
         this.setMatrix();
         Dictionary = new int[(int)Math.pow(2, this.size)];
+        // intialize the dictionary with minimum integer value
+        // assume that it won't be inserted
         Arrays.fill(this.Dictionary, Integer.MIN_VALUE);
     }
     // n : number to be hashed
     public void hash(int n)
     {
         int answer[] = new int[this.size];
-        String bits = Integer.toBinaryString(n);
+        String bits = Integer.toBinaryString(n); // convert the number to bit representation
         for(int i = 0; i < bits.length(); i++)
         {
             if(bits.charAt(i) == '0'){continue;}
@@ -42,12 +44,11 @@ public class HashTable {
         else
         {
             collisions++;
-            // System.out.println("collision trying to hash " + n + " found " + this.Dictionary[index]);
             this.reHash();
             this.hash(n);
         }
     }
-
+    // rehash in case of a collision rebuild the table and choose new hash function
     public void reHash()
     {
         // choose another hash funstion
@@ -58,7 +59,6 @@ public class HashTable {
             {
                 int temp = this.Dictionary[i];
                 this.Dictionary[i] = Integer.MIN_VALUE;
-                // System.out.println("rehashing " + temp);
                 this.hash(temp);
             }
         }
@@ -75,7 +75,30 @@ public class HashTable {
         }
         this.size = count; 
     }
-    // create random matrix
+    // return the number at the following index if not found throws exception
+    public int lookUp(int n)
+    {
+        int answer[] = new int[this.size];
+        String bits = Integer.toBinaryString(n); 
+        for(int i = 0; i < bits.length(); i++)
+        {
+            if(bits.charAt(i) == '0'){continue;}
+            int column [] = this.getColumn(i);
+            answer = this.addColumns(answer, column);
+        }
+        int index = 0;
+        for(int i = 0; i < answer.length; i++)
+        {
+            if(answer[i] == 0){continue;}
+            index = index + (1<<i);
+        }
+        if(this.Dictionary[index] ==  Integer.MIN_VALUE)
+        {
+            throw new NoSuchElementException();
+        }
+        return this.Dictionary[index];
+    }
+    // create random matrix (hash function)
     protected void setMatrix()
     {
         for(int i = 0; i < matrix.length; i++)
@@ -86,7 +109,7 @@ public class HashTable {
             }
         }
     }
-
+    // get the column with the given index
     protected int[] getColumn(int index) {
         int[] column = new int[(int)Math.pow(2, this.size)]; 
         for(int i=0; i<column.length; i++){
@@ -94,7 +117,7 @@ public class HashTable {
         }
         return column;
     }
-
+    // add first and second column and put thresult in the first
     protected int[] addColumns(int x[], int y[])
     {
         for(int i = 0; i < x.length; i++)
