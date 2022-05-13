@@ -24,13 +24,18 @@ public class AppLinear {
         build_samples(samples);
         /* Testing Loop. */
         for(int k = 0; k < samples.length; k++){
-            for(int l = 0; l < samples[0].length; l++)
+            for(int l = 0; l < samples[0].length; l++){
                 try{
                     HashTables[k].hash(samples[k][l]); // Hashing the element.
                 }
                 catch(Exception e){ e.printStackTrace(); }
-            System.out.println("collisions = " + HashTables[k].collisions + " of HashTable " + (k+1) + " <------------------");
-            System.out.println(">>>>> Table size = " + HashTables[k].Dictionary.length);
+            }
+            /* Collisions number */
+            // System.out.println("collisions = " + HashTables[k].collisions + " of HashTable " + (k+1) + " <------------------");
+            System.out.println((k+1) + ")");
+            HashTables[k].printCollisions();
+            /* Table size & Real size - O(n) space */
+            HashTables[k].printTableSize();
             HashTables[k].printRealSize();
         }
     }
