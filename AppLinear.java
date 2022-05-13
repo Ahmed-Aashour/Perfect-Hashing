@@ -1,42 +1,45 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Random;
+import java.util.Scanner;
 
 public class AppLinear {
-
-    /* Stores the random samples in the "samples" 2D-Array. */
-    static void build_samples(int[][] samples){
+    /* O(N)-Space Application */
+    public static void main(String[] args) throws Exception {
+        File f = new File("O(N) test cases\\testcase8.txt");
+        f.createNewFile();
+        FileWriter writer = new FileWriter(f);
+        System.out.print("enter size : ");
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        HashTableLinear hashTable = new HashTableLinear(n);
+        writer.write("entered size " + n + "\n");
+        writer.write("built hashtable with " + hashTable.Dictionary.length + " Buckets \n");
         int max = (int)Math.pow(2, 32);
         Random rand = new Random();
-        for(int s = 0; s < samples.length; s++) //for each sample 
-            for(int e = 0; e < samples[0].length; e++) //for each element
-                samples[s][e] = rand.nextInt(max);
-    }
-
-    public static void main(String[] args) {
-        int samplesNum = 20 ;   /* Number of samples to run. */
-        int sampleSize = 100;   /* The size of each sample (number of elements to be hashed). */
-        HashTableLinear[] HashTables = new HashTableLinear[samplesNum]; /* The hash tables array (one table for each sample). */
-
-        /* Constructing each Hash Table with the sample size. */
-        for(int i = 0; i < HashTables.length; i++)
-            HashTables[i] = new HashTableLinear(sampleSize);
-        /* Building the samples with RANDOM values. */
-        int samples[][] = new int[samplesNum][sampleSize];
-        build_samples(samples);
-        /* Testing Loop. */
-        for(int k = 0; k < samples.length; k++){
-            for(int l = 0; l < samples[0].length; l++){
+        writer.write("inserting variable length samples 20 times\n");
+        for(int k = 0; k < 20; k++)
+        {
+            int size = rand.nextInt(hashTable.Dictionary.length);
+            hashTable.setSampleSize(size);
+            writer.write(k+1 + "-" + " inserting " + size + " elements\n");
+            for(int i = 0; i < size; i++)
+            {
                 try{
-                    HashTables[k].hash(samples[k][l]); // Hashing the element.
+                    int num  = rand.nextInt(max);
+                    hashTable.hash(num);
                 }
-                catch(Exception e){ e.printStackTrace(); }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
-            /* Collisions number */
-            // System.out.println("collisions = " + HashTables[k].collisions + " of HashTable " + (k+1) + " <------------------");
-            System.out.println((k+1) + ")");
-            HashTables[k].printCollisions();
-            /* Table size & Real size - O(n) space */
-            HashTables[k].printTableSize();
-            HashTables[k].printRealSize();
+            writer.write("   the table is O(" + (hashTable.actualSize/(n*1.00)) + " n)-Space\n");
+            writer.write("   level {1,2} collisions : {" + hashTable.collisions_lvl_1 + ", " + hashTable.collisions_lvl_2 +  "}\n");
+            writer.write("   number of rebuilds : " + hashTable.rebuilds + "\n");
+            hashTable = new HashTableLinear(n);
         }
+        sc.close();
+        writer.close();
     }
 }

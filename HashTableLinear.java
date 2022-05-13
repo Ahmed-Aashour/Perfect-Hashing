@@ -1,11 +1,14 @@
 import java.util.*;
 
 public class HashTableLinear {
-    final int MAXBITS = Integer.SIZE; //32
-    int sampleSize;
+    final int MAXBITS = Integer.SIZE; //32 bits
     int size;
+    int sampleSize;
     int elementsInserted = 0;
-    int collisions = 0;
+    int actualSize = 0;
+    int collisions_lvl_1 = 0;
+    int collisions_lvl_2 = 0;
+    int rebuilds = 0;
     Bucket Dictionary[];
     int matrix[][];
     //constructor
@@ -16,6 +19,10 @@ public class HashTableLinear {
         this.setMatrix();
         this.Dictionary = new Bucket[(int)Math.pow(2, this.size)];
         this.constructBuckets(); //construct all Buckets
+    }
+
+    public void setSampleSize(int sampleSize){
+        this.sampleSize = sampleSize;
     }
 
     //Bucket sub-class
@@ -87,7 +94,7 @@ public class HashTableLinear {
             index = index + (1<<i);
         }
         if(this.Dictionary[index].isNotEmpty()) // Collision Condition
-            this.collisions++;
+            this.collisions_lvl_1++;
 
         this.Dictionary[index].put(n);
         this.elementsInserted++;
@@ -111,6 +118,7 @@ public class HashTableLinear {
             //System.out.println("Hash 2nd level !! as Eni^2 " + sum_squared + " < 4*n " + 4*this.Dictionary.length);
         }
         else{ // Not cool :(
+            this.rebuilds++;
             this.rehash();
             //System.out.println("Rebuilding !!");
         }
@@ -119,7 +127,7 @@ public class HashTableLinear {
     /* Rehashes the Hash Table using a new universal hash function */
     private void rehash(){
         // Reset collisions & elements inserted counters
-        this.collisions = 0;
+        this.collisions_lvl_1 = 0;
         this.elementsInserted = 0;
         // Store the hashed elements to be rehashed
         int elements[] = new int[sampleSize];
@@ -138,6 +146,31 @@ public class HashTableLinear {
         // Rehashing
         for(int element: elements)
             this.hash(element);
+    }
+
+    /* looks up for a specific number
+       if its found returns it & if not found throws an Exception. */
+    public int lookUp(int n){
+        // lookUp in the 1st level
+        int answer[] = new int[this.size];
+        String bits = Integer.toBinaryString(n); 
+        for(int i = 0; i < bits.length(); i++)
+        {
+            if(bits.charAt(i) == '0'){continue;}
+            int column [] = this.getColumn(i);
+            answer = this.addColumns(answer, column);
+        }
+        int index = 0;
+        for(int i = 0; i < answer.length; i++)
+        {
+            if(answer[i] == 0){continue;}
+            index = index + (1<<i);
+        }
+        if(this.Dictionary[index].isNotEmpty()){
+            // lookUp in the 2nd level
+            return this.Dictionary[index].lookUp(n);
+        }
+        throw new NoSuchElementException();
     }
     
     /* find the smallest number power of 2 that covers the desired dictionary size */
@@ -179,34 +212,23 @@ public class HashTableLinear {
         return x;
     }
 
-    /* Hashes each bucket the filled with elemets */
+    /* Hashes each bucket that filled with elemets
+       & computes the sum of the Buckets collisions (2nd level collisions)
+       & computes the actual size occupied by the hash table.  */
     private void hashBuckets(){
-        for(Bucket bucket: this.Dictionary)
-            if(bucket.isNotEmpty()) // hash only the filled ones
-                bucket.hashBucket();
-    }
-    
-    void printCollisions(){
-        int BucketsCollisions = 0;
-        for (Bucket bucket : this.Dictionary) {
-            if(bucket.isNotEmpty())
-                BucketsCollisions += bucket.collisions;
-        }
-        int total = BucketsCollisions + this.collisions;
-        System.out.println("Hash Table collosions = " + this.collisions);
-        System.out.println("Buckets    collisions = " + BucketsCollisions);
-        System.out.println(">>>> Total collisions = " + total);
-    }
-    /* Prints the Dictionary size, which is power of 2 */
-    void printTableSize(){
-        System.out.println("----> Table size = " + this.Dictionary.length);
-    }
-    /* Prints the sum of the Buckets size, which must be of O(n) sapace */
-    void printRealSize(){
-        int size = 0;
         for(Bucket bucket: this.Dictionary){
-            size += bucket.Dictionary.length;
+            if(bucket.isNotEmpty()){ // hash only the filled ones
+                bucket.hashBucket();
+            }
         }
-        System.out.println("----> Real  size = " + size);
+        compute_collisions_and_actualSize();
+    }
+
+    private void compute_collisions_and_actualSize(){
+        for(Bucket bucket: this.Dictionary)
+            if(bucket.isNotEmpty()){ // hash only the filled ones
+                this.collisions_lvl_2 += bucket.collisions;
+                this.actualSize += bucket.Dictionary.length;
+            }
     }
 }

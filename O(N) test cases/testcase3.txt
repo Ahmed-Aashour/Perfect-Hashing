@@ -1,0 +1,83 @@
+entered size 100
+built hashtable with 128 Buckets 
+inserting variable length samples 20 times
+1- inserting 115 elements
+   the table is O(2.56 n)-Space
+   level {1,2} collisions : {36, 12}
+   number of rebuilds : 0
+2- inserting 39 elements
+   the table is O(0.51 n)-Space
+   level {1,2} collisions : {6, 2}
+   number of rebuilds : 0
+3- inserting 89 elements
+   the table is O(1.75 n)-Space
+   level {1,2} collisions : {25, 10}
+   number of rebuilds : 0
+4- inserting 27 elements
+   the table is O(0.31 n)-Space
+   level {1,2} collisions : {2, 0}
+   number of rebuilds : 0
+5- inserting 21 elements
+   the table is O(0.27 n)-Space
+   level {1,2} collisions : {3, 0}
+   number of rebuilds : 0
+6- inserting 102 elements
+   the table is O(2.35 n)-Space
+   level {1,2} collisions : {32, 5}
+   number of rebuilds : 0
+7- inserting 27 elements
+   the table is O(0.27 n)-Space
+   level {1,2} collisions : {0, 0}
+   number of rebuilds : 0
+8- inserting 43 elements
+   the table is O(0.61 n)-Space
+   level {1,2} collisions : {9, 1}
+   number of rebuilds : 0
+9- inserting 40 elements
+   the table is O(0.44 n)-Space
+   level {1,2} collisions : {2, 0}
+   number of rebuilds : 0
+10- inserting 79 elements
+   the table is O(1.72 n)-Space
+   level {1,2} collisions : {24, 5}
+   number of rebuilds : 0
+11- inserting 70 elements
+   the table is O(1.27 n)-Space
+   level {1,2} collisions : {18, 5}
+   number of rebuilds : 0
+12- inserting 85 elements
+   the table is O(1.58 n)-Space
+   level {1,2} collisions : {23, 5}
+   number of rebuilds : 0
+13- inserting 97 elements
+   the table is O(2.08 n)-Space
+   level {1,2} collisions : {30, 13}
+   number of rebuilds : 0
+14- inserting 111 elements
+   the table is O(2.89 n)-Space
+   level {1,2} collisions : {39, 11}
+   number of rebuilds : 0
+15- inserting 88 elements
+   the table is O(1.43 n)-Space
+   level {1,2} collisions : {23, 6}
+   number of rebuilds : 0
+16- inserting 93 elements
+   the table is O(1.44 n)-Space
+   level {1,2} collisions : {21, 10}
+   number of rebuilds : 0
+17- inserting 65 elements
+   the table is O(1.15 n)-Space
+   level {1,2} collisions : {16, 1}
+   number of rebuilds : 0
+18- inserting 33 elements
+   the table is O(0.41 n)-Space
+   level {1,2} collisions : {4, 0}
+   number of rebuilds : 0
+19- inserting 116 elements
+   the table is O(2.96 n)-Space
+   level {1,2} collisions : {43, 6}
+   number of rebuilds : 0
+20- inserting 71 elements
+   the table is O(1.22 n)-Space
+   level {1,2} collisions : {18, 3}
+   number of rebuilds : 0

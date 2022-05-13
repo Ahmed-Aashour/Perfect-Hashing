@@ -4,8 +4,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class App {
+    /* O(N^2)-Space Application */
     public static void main(String[] args) throws Exception {
-        File f = new File("testcase8.txt");
+        File f = new File("O(N2) test cases\\testcase8.txt");
         f.createNewFile();
         FileWriter writer = new FileWriter(f);
         System.out.print("enter size : ");
