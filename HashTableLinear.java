@@ -29,24 +29,19 @@ public class HashTableLinear {
     class Bucket extends HashTable{
 
         List<Integer> elements;     /* Holds the elemets to be hashed */
-        /* boolean hasCollisions; */      /* True: if there are more than 1 element 
-                                       False: otherwise. */
+        
         int id;
         //constructor
         Bucket(int size, int id) {
             super(size);
             this.id = id;
             this.elements = new ArrayList<Integer>();
-            // this.hasCollisions = false;
             this.Dictionary = new int[0];
         }
 
         /* Adds the elements to the Bucket & performs hashing to the whole bucket again. */
         void put(int n){ 
             this.elements.add(n);
-            // this.hashBucket();
-            // if(this.elements.size() == 2)
-            //     this.hasCollisions = true;
         }
         /* Returns the size of the elements collided in the same Bucket. */
         int size() { return this.elements.size(); }
